@@ -31,8 +31,8 @@ class Compressor:
 			try:
 				to_steam = round((item['steam_price']/1.15-item['tm_price'])/item['tm_price']*100,2)
 				to_market = round((item['tm_price']/1.05-item['steam_price'])/item['steam_price']*100,2)
-				print(item)
-				print({'name':item['name'],'to_steam_df':to_steam,'to_tm_df':to_market})
-				dbworker.databases().difference_writer({'name':item['name'],'to_steam_df':to_steam,'to_tm_df':to_market})
-			except:
-				print(item)
+				avg_df = round((item['avg']/1.05-item['steam_price'])/item['avg']*100,2)
+				print({'name':item['name'],'to_steam_df':to_steam,'to_tm_df':to_market,'avg_df':avg_df})
+				dbworker.databases().difference_writer({'name':item['name'],'to_steam_df':to_steam,'to_tm_df':to_market, 'avg_df':avg_df},'all')
+			except Exception as e:
+				print(e)

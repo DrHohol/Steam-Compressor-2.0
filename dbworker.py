@@ -41,17 +41,22 @@ class databases():
 		except:
 			print(itemdata)
 
-	def difference_writer(self,item):
+	def difference_writer(self,item,mode):
 		if type(item) == dict:
-			self.itemsbase_cursor.execute("UPDATE items SET Difference_to_steam=?,Difference_to_tm=? WHERE Name=?",(item['to_steam_df'],item['to_tm_df'],item['name']))
-			self.itemsbase.commit()
+			if mode == 'one':
+				print(mode)
+				self.itemsbase_cursor.execute("UPDATE items SET Difference_to_steam=?,Difference_to_tm=? WHERE Name=?",(item['to_steam_df'],item['to_tm_df'],item['name']))
+				self.itemsbase.commit()
+			else:
+				self.itemsbase_cursor.execute("UPDATE items SET Difference_to_steam=?,Difference_to_tm=?,Avg_difference=? WHERE Name=?",(item['to_steam_df'],item['to_tm_df'],item['avg_df'],item['name']))
+				self.itemsbase.commit()
 		else: pass
 
 	def get_items(self):
-		self.itemsbase_cursor.execute('SELECT Name,Steam_price,TM_Price From items')
+		self.itemsbase_cursor.execute('SELECT Name,Steam_price,TM_Price,Avg From items')
 		items = self.itemsbase_cursor.fetchall()
 		items_list = []
 		for item in items:
 			if item[1] != '' and item[1] != None:
-				items_list.append({'name':item[0],'steam_price':item[1],'tm_price':item[2]})
+				items_list.append({'name':item[0],'steam_price':item[1],'tm_price':item[2],'avg':item[3]})
 		return items_list

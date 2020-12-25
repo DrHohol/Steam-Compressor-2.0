@@ -15,7 +15,7 @@ def tm_checker():
 		databases().write_tm(itms)
 		Compressor.calculate_all()
 		sleep(30)
-threading.Thread(target=tm_checker,daemon=True).start()
+threading.Thread(target=tm_checker).start()
 
 while True:
 	for i in m.Parse():
@@ -23,6 +23,6 @@ while True:
 		price = st.get_prices(i)
 		databases().write_steam(price)
 		difference = Compressor.calculate_one(price)
-		databases().difference_writer(difference)
+		databases().difference_writer(difference,'one')
 		sleep(3)
 
